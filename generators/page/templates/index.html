@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="import" href="modules/inline/viewportMeta.inline.html?__inline">
+    <link rel="import" href="modules/inline/headerMeta.inline.html?__inline">
+    <title><%= pageTitle %></title>
+    <link rel="import" href="modules/inline/headerBase.inline.html?__inline">
+    <!--STYLE_PLACEHOLDER-->
+</head>
+<body>
+
+<div id="js-page-loading" class="page-loading"><p>正在加载</p></div>
+
+<link rel="import" href="modules/inline/bottomBase.inline.html?__inline">
+<!--RESOURCEMAP_PLACEHOLDER-->
+<!--SCRIPT_PLACEHOLDER-->
+<%- doCGIPreload ? '<script src="modules/inline/async.inline.js?__inline"></script>' : '' %>
+<script src="pages/<%= pageName %>/<%= pageName %>.inline.js?__inline"></script>
+</body>
+</html>

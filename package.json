@@ -1,0 +1,28 @@
+{
+  "name": "generator-imweb-h5",
+  "version": "1.0.0",
+  "description": "imweb h5 项目脚手架",
+  "main": "index.js",
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imweb/generator-imweb-h5.git"
+  },
+  "author": "long",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/imweb/generator-imweb-h5/issues"
+  },
+  "homepage": "https://github.com/imweb/generator-imweb-h5#readme",
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "imweb-git-user-name": "^0.1.0",
+    "moment": "^2.17.1",
+    "yeoman-generator": "^1.1.0"
+  }
+}
