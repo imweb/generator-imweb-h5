@@ -6,7 +6,7 @@ const getName = require('imweb-git-user-name');
 const moment = require('moment');
 const chalk = require('chalk');
 
-const validator = require('./validator');
+const validator = require('../../lib/validator');
 
 module.exports = class extends Generator {
     constructor(args, opts) {
@@ -43,14 +43,22 @@ module.exports = class extends Generator {
             message: 'Input the title of the page:',
         }, {
             type: 'confirm',
+            name: 'isPage',
+            message: 'use page framework?',
+            default: false
+        }, {
+            type: 'confirm',
             name: 'doCGIPreload',
             message: 'Want to use CGI preload?',
-            default: false
+            default: false,
+            when: function(answers) {
+                return !answers.isPage;
+            }
         }, {
             type: 'input',
             name: 'preloadCGI',
             message: 'Input the preload cgi (/cgi-bin/???):',
-            when: function (answers) {
+            when: function(answers) {
                 return answers.doCGIPreload;
             }
         }, {
@@ -90,14 +98,14 @@ module.exports = class extends Generator {
 
         // src/pages/[pageName]/[pageName].inline.js
         this.fs.copyTpl(
-            this.templatePath(this.props.doCGIPreload ? 'index/index.inline.preload.js' : 'index/index.inline.js'),
+            this.templatePath(this.props.isPage ? 'index/index.inline.page.js' : this.props.doCGIPreload ? 'index/index.inline.preload.js' : 'index/index.inline.js'),
             this.destinationPath(`src/pages/${this.props.pageName}/${this.props.pageName}.inline.js`),
             this.props
         );
 
         // src/pages/[pageName]/[pageName].js
         this.fs.copyTpl(
-            this.templatePath('index/index.js'),
+            this.templatePath(this.props.isPage ? 'index/index.page.js' : 'index/index.js'),
             this.destinationPath(`src/pages/${this.props.pageName}/${this.props.pageName}.js`),
             this.props
         );
@@ -114,11 +122,19 @@ module.exports = class extends Generator {
             this.destinationPath(`src/pages/${this.props.pageName}/${this.props.pageName}.scss`)
         );
 
-        // src/pages/[pageName]/db.[pageName].scss
-        this.fs.copy(
-            this.templatePath('index/db.index.js'),
-            this.destinationPath(`src/pages/${this.props.pageName}/db.${this.props.pageName}.js`)
-        );
+        if (this.props.isPage) {
+            // src/pages/[pageName]/data.page.js
+            this.fs.copy(
+                this.templatePath('index/data.page.js'),
+                this.destinationPath(`src/pages/${this.props.pageName}/data.page.js`)
+            );
+        } else {
+            // src/pages/[pageName]/db.[pageName].js
+            this.fs.copy(
+                this.templatePath('index/db.index.js'),
+                this.destinationPath(`src/pages/${this.props.pageName}/db.${this.props.pageName}.js`)
+            );
+        }
     }
 
     end() {

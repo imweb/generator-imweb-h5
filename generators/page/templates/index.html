@@ -9,13 +9,19 @@
     <!--STYLE_PLACEHOLDER-->
 </head>
 <body>
-
+<% if(isPage) { %>
+<div id="wrapper" class="wrapper">
+    <div class="scroll-wrapper">
+        <div id="js-page-loading" class="page-loading"><p>正在加载</p></div>
+        <!-- sections -->
+    </div>
+</div>
+<% } else { %>
 <div id="js-page-loading" class="page-loading"><p>正在加载</p></div>
-
+<% } %>
 <link rel="import" href="modules/inline/bottomBase.inline.html?__inline">
 <!--RESOURCEMAP_PLACEHOLDER-->
 <!--SCRIPT_PLACEHOLDER-->
-<%- doCGIPreload ? '<script src="modules/inline/async.inline.js?__inline"></script>' : '' %>
-<script src="pages/<%= pageName %>/<%= pageName %>.inline.js?__inline"></script>
+<%- !isPage && doCGIPreload ? '<script src="modules/inline/async.inline.js?__inline"></script>\n' : '' %><script src="pages/<%= pageName %>/<%= pageName %>.inline.js?__inline"></script>
 </body>
 </html>

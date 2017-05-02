@@ -14,12 +14,12 @@ function bindEvents() {
 
     this.hasBindEvents = true;
 }
-<%= `${doCGIPreload? '\nfunction initData(data) {\n}\n' : ''}` %>
+<%= `${!isPage && doCGIPreload? '\nfunction initData(data) {\n}\n' : ''}` %>
 function init(opts) {
 
     bindEvents.call(this);
 }
 
 module.exports = {
-    init: init<%= `${doCGIPreload? ',\n\tinitData: initData' : ''}` %>
+    init: init<%= `${!isPage && doCGIPreload? ',\n\tinitData: initData' : ''}` %>
 };
