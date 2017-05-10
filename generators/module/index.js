@@ -25,6 +25,8 @@ module.exports = class extends Generator {
             name: 'pageName',
             message: 'Input the name of the page:',
             validate: (v) => {
+                const dir = path.join(this.distPageResourcePath, v);
+
                 v = v.trim();
 
                 if (!validator.pageName(v)) {
@@ -36,7 +38,8 @@ module.exports = class extends Generator {
                     return `page [${v}] is not existed`;
                 }
 
-                if (!validator.fileExist(`data.page.js`, path.join(this.distPageResourcePath, v))) {
+                if (!validator.fileExist(`data.page.js`, dir) &&
+                    !validator.fileExist(`data.page.es`, dir)) {
                     return `page [${v}] does not use page framework`;
                 }
 
@@ -46,6 +49,7 @@ module.exports = class extends Generator {
                 this.distMainPageResourcePath = path.join(this.distPageResourcePath, v);
                 this.distPageModuleResourcePath = path.join(this.distMainPageResourcePath, 'modules');
                 this.indexJSFilePath = path.join(this.distMainPageResourcePath, `${v}.js`);
+                this.indexESFilePath = path.join(this.distMainPageResourcePath, `${v}.es`);
                 this.indexHtmlFilePath = path.join(this.distHtmlPath, `${v}.html`);
 
                 return v;
@@ -72,6 +76,11 @@ module.exports = class extends Generator {
             type: 'confirm',
             name: 'isSimple',
             message: 'use default mode?',
+            default: true
+        }, {
+            type: 'confirm',
+            name: 'useES',
+            message: 'use ES6?',
             default: true
         }, {
             type: 'input',
@@ -113,14 +122,14 @@ module.exports = class extends Generator {
         // src/pages/[pageName]/modules/[moduleName]/[moduleName].js
         this.fs.copyTpl(
             this.templatePath('index.js'),
-            this.destinationPath(`src/pages/${this.props.pageName}/modules/${this.props.moduleName}/${this.props.moduleName}.js`),
+            this.destinationPath(`src/pages/${this.props.pageName}/modules/${this.props.moduleName}/${this.props.moduleName}.${ this.props.useES ? 'es' : 'js' }`),
             this.props
         );
 
         // src/pages/[pageName]/modules/[moduleName]/selector.js
         this.fs.copy(
             this.templatePath('selector.js'),
-            this.destinationPath(`src/pages/${this.props.pageName}/modules/${this.props.moduleName}/selector.js`)
+            this.destinationPath(`src/pages/${this.props.pageName}/modules/${this.props.moduleName}/selector.${ this.props.useES ? 'es' : 'js' }`)
         );
 
         // src/pages/[pageName]/modules/[moduleName]/[moduleName].scss
@@ -146,16 +155,25 @@ module.exports = class extends Generator {
         });
         writeHtml && fs.writeFileSync(this.indexHtmlFilePath, htmlFileCnt, 'utf-8');
 
-        // add module to src/pages/[pageName]/[pageName].js
-        let jsFileCnt = fs.readFileSync(this.indexJSFilePath, 'utf-8');
+        // add module to src/pages/[pageName]/[pageName].(js|es)
+        let jsFileCnt;
+        let writeFilePath;
+        try {
+            jsFileCnt = fs.readFileSync(this.indexJSFilePath, 'utf-8');
+            writeFilePath = this.indexJSFilePath;
+        } catch (e) {
+            jsFileCnt = fs.readFileSync(this.indexESFilePath, 'utf-8');
+            writeFilePath = this.indexESFilePath;
+        }
+
         let writeJs;
         jsFileCnt = jsFileCnt.replace(/\/\* modules \*\//, (str) => {
             writeJs = true;
             return `${this.props.moduleName}Opt,\n\t\t/* modules */`;
         });
         if (writeJs) {
-            jsFileCnt = `var ${this.props.moduleName}Opt = require('./modules/${this.props.moduleName}/${this.props.moduleName}');\n${jsFileCnt}`;
-            fs.writeFileSync(this.indexJSFilePath, jsFileCnt, 'utf-8');
+            jsFileCnt = `${ this.props.useES ? 'const' : 'var' } ${this.props.moduleName}Opt = require('./modules/${this.props.moduleName}/${this.props.moduleName}');\n${jsFileCnt}`;
+            fs.writeFileSync(writeFilePath, jsFileCnt, 'utf-8');
         }
     }
 

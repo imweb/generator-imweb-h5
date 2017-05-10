@@ -1,4 +1,4 @@
-var DB = require('modules/db');
+<%= useES ? 'const' : 'var' %> DB = require('modules/db');
 
 $.extend(DB, {
     // getIndex: DB.httpMethod({

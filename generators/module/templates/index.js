@@ -1,7 +1,7 @@
-var selector = require('./selector');
-<% if (isSimple) { %>var tpl = require('./<%= moduleName %>.tpl');<% } %>
+<%= useES ? 'const' : 'var' %> selector = require('./selector');
+<% if (isSimple) { %><%= useES ? 'const' : 'var' %> tpl = require('./<%= moduleName %>.tpl');<% } %>
 
-var conf = {
+<%= useES ? 'const' : 'var' %> conf = {
   name: '<%= moduleName %>',
   box: '.<%= moduleName %>',
   dataSeletor: selector,

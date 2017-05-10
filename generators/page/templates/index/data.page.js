@@ -1,4 +1,4 @@
-var conf = {
+<%= useES ? 'const' : 'var' %> conf = {
     /* data */
 };
 

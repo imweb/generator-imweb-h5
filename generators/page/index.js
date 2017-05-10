@@ -43,6 +43,11 @@ module.exports = class extends Generator {
             message: 'Input the title of the page:',
         }, {
             type: 'confirm',
+            name: 'useES',
+            message: 'use ES6?',
+            default: true
+        }, {
+            type: 'confirm',
             name: 'isPage',
             message: 'use page framework?',
             default: false
@@ -106,14 +111,14 @@ module.exports = class extends Generator {
         // src/pages/[pageName]/[pageName].js
         this.fs.copyTpl(
             this.templatePath(this.props.isPage ? 'index/index.page.js' : 'index/index.js'),
-            this.destinationPath(`src/pages/${this.props.pageName}/${this.props.pageName}.js`),
+            this.destinationPath(`src/pages/${this.props.pageName}/${this.props.pageName}.${ this.props.useES ? 'es' : 'js' }`),
             this.props
         );
 
         // src/pages/[pageName]/[pageName].async.js
         this.fs.copy(
             this.templatePath('index/index.async.js'),
-            this.destinationPath(`src/pages/${this.props.pageName}/${this.props.pageName}.async.js`)
+            this.destinationPath(`src/pages/${this.props.pageName}/${this.props.pageName}.async.${ this.props.useES ? 'es' : 'js' }`)
         );
 
         // src/pages/[pageName]/[pageName].scss
@@ -124,15 +129,17 @@ module.exports = class extends Generator {
 
         if (this.props.isPage) {
             // src/pages/[pageName]/data.page.js
-            this.fs.copy(
+            this.fs.copyTpl(
                 this.templatePath('index/data.page.js'),
-                this.destinationPath(`src/pages/${this.props.pageName}/data.page.js`)
+                this.destinationPath(`src/pages/${this.props.pageName}/data.page.${ this.props.useES ? 'es' : 'js' }`),
+                this.props
             );
         } else {
             // src/pages/[pageName]/db.[pageName].js
-            this.fs.copy(
+            this.fs.copyTpl(
                 this.templatePath('index/db.index.js'),
-                this.destinationPath(`src/pages/${this.props.pageName}/db.${this.props.pageName}.js`)
+                this.destinationPath(`src/pages/${this.props.pageName}/db.${this.props.pageName}.${ this.props.useES ? 'es' : 'js' }`),
+                this.props
             );
         }
     }

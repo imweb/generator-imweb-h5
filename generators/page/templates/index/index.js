@@ -5,7 +5,7 @@
  * 
  */
 
-var T = require('modules/tools.ext');
+<%= useES ? 'const' : 'var' %> T = require('modules/tools.ext');
 
 function bindEvents() {
     if (this.hasBindEvents) {

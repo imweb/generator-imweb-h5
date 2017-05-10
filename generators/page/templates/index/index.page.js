@@ -1,5 +1,5 @@
-var dataOpt = require('./data.page');
-var pageName = '<%= pageName %>';
+<%= useES ? 'const' : 'var' %> dataOpt = require('./data.page');
+<%= useES ? 'const' : 'var' %> pageName = '<%= pageName %>';
 
 module.exports = {
     pageName: pageName,
