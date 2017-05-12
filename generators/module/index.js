@@ -39,7 +39,7 @@ module.exports = class extends Generator {
                 }
 
                 if (!validator.fileExist(`data.page.js`, dir) &&
-                    !validator.fileExist(`data.page.es`, dir)) {
+                    !validator.fileExist(`data.page.es6.js`, dir)) {
                     return `page [${v}] does not use page framework`;
                 }
 
@@ -49,7 +49,7 @@ module.exports = class extends Generator {
                 this.distMainPageResourcePath = path.join(this.distPageResourcePath, v);
                 this.distPageModuleResourcePath = path.join(this.distMainPageResourcePath, 'modules');
                 this.indexJSFilePath = path.join(this.distMainPageResourcePath, `${v}.js`);
-                this.indexESFilePath = path.join(this.distMainPageResourcePath, `${v}.es`);
+                this.indexESFilePath = path.join(this.distMainPageResourcePath, `${v}.es6.js`);
                 this.indexHtmlFilePath = path.join(this.distHtmlPath, `${v}.html`);
 
                 return v;
@@ -122,14 +122,14 @@ module.exports = class extends Generator {
         // src/pages/[pageName]/modules/[moduleName]/[moduleName].js
         this.fs.copyTpl(
             this.templatePath('index.js'),
-            this.destinationPath(`src/pages/${this.props.pageName}/modules/${this.props.moduleName}/${this.props.moduleName}.${ this.props.useES ? 'es' : 'js' }`),
+            this.destinationPath(`src/pages/${this.props.pageName}/modules/${this.props.moduleName}/${this.props.moduleName}.${ this.props.useES ? 'es6.js' : 'js' }`),
             this.props
         );
 
         // src/pages/[pageName]/modules/[moduleName]/selector.js
         this.fs.copy(
             this.templatePath('selector.js'),
-            this.destinationPath(`src/pages/${this.props.pageName}/modules/${this.props.moduleName}/selector.${ this.props.useES ? 'es' : 'js' }`)
+            this.destinationPath(`src/pages/${this.props.pageName}/modules/${this.props.moduleName}/selector.${ this.props.useES ? 'es6.js' : 'js' }`)
         );
 
         // src/pages/[pageName]/modules/[moduleName]/[moduleName].scss

@@ -111,14 +111,14 @@ module.exports = class extends Generator {
         // src/pages/[pageName]/[pageName].js
         this.fs.copyTpl(
             this.templatePath(this.props.isPage ? 'index/index.page.js' : 'index/index.js'),
-            this.destinationPath(`src/pages/${this.props.pageName}/${this.props.pageName}.${ this.props.useES ? 'es' : 'js' }`),
+            this.destinationPath(`src/pages/${this.props.pageName}/${this.props.pageName}.${ this.props.useES ? 'es6.js' : 'js' }`),
             this.props
         );
 
         // src/pages/[pageName]/[pageName].async.js
         this.fs.copy(
             this.templatePath('index/index.async.js'),
-            this.destinationPath(`src/pages/${this.props.pageName}/${this.props.pageName}.async.${ this.props.useES ? 'es' : 'js' }`)
+            this.destinationPath(`src/pages/${this.props.pageName}/${this.props.pageName}.async.${ this.props.useES ? 'es6.js' : 'js' }`)
         );
 
         // src/pages/[pageName]/[pageName].scss
@@ -131,14 +131,14 @@ module.exports = class extends Generator {
             // src/pages/[pageName]/data.page.js
             this.fs.copyTpl(
                 this.templatePath('index/data.page.js'),
-                this.destinationPath(`src/pages/${this.props.pageName}/data.page.${ this.props.useES ? 'es' : 'js' }`),
+                this.destinationPath(`src/pages/${this.props.pageName}/data.page.${ this.props.useES ? 'es6.js' : 'js' }`),
                 this.props
             );
         } else {
             // src/pages/[pageName]/db.[pageName].js
             this.fs.copyTpl(
                 this.templatePath('index/db.index.js'),
-                this.destinationPath(`src/pages/${this.props.pageName}/db.${this.props.pageName}.${ this.props.useES ? 'es' : 'js' }`),
+                this.destinationPath(`src/pages/${this.props.pageName}/db.${this.props.pageName}.${ this.props.useES ? 'es6.js' : 'js' }`),
                 this.props
             );
         }
