@@ -1,0 +1,30 @@
+.android {
+    height: 100%;
+    body {
+        overflow-x: hidden;
+
+        height: 100%;
+    }
+}
+
+.iphone {
+    height: 100%;
+    body {
+        height: 100%;
+    }
+    .wrapper {
+        overflow-x: hidden;
+        overflow-y: scroll;
+
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
+        -webkit-overflow-scrolling: touch;
+    }
+    .scroll-wrapper {
+        width: 100%;
+    }
+}
