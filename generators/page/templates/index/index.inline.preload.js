@@ -46,7 +46,7 @@ window.onload = function() {
     var isIOSQQ = isIOS && (/qq\/(\d+\.\d+)/i).test(_ua);
 
     Async.parallel([function(done) {
-        require.loadUrl(['common', './<%= pageName %>'], function(T, Main) {
+        require.loadUrl(['zepto', 'common', './<%= pageName %>'], function($, T, Main) {
             window.bindCatchFunctionWithZepto();
             Main.init();
             done(Main || {});
