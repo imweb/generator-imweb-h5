@@ -4,7 +4,7 @@
 <%= useES ? 'const' : 'var' %> conf = {
   name: '<%= moduleName %>',
   box: '.<%= moduleName %>',
-  dataSeletor: selector,
+  dataSelector: selector,
   <% if (isSimple) { %>tpl: tpl,<% } %>
 };
 
